@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Announcements · Aevum{% endblock %}
+{% block eyebrow %}ANNOUNCEMENTS{% endblock %}
+{% block topbar_title %}Announcements{% endblock %}
+{% block content %}
+<div class="d-flex justify-between items-center mb-4 gap-3 flex-wrap">
+  <div>
+    <h1 class="display-title" style="font-size:clamp(1.7rem,3vw,2.2rem)"><em>Announcements</em></h1>
+    <p class="text-mid mt-1">Premium notice board — pinned, public, and private posts.</p>
+  </div>
+  <a class="btn-x btn-primary-x" href="{% url 'announcement-create' %}"><span data-icon="plus"></span><span>New announcement</span></a>
+</div>
+<div class="x-panel">
+  {% for item in announcements %}
+  <div class="feed-x">
+    <div class="av-x pink"><span data-icon="news"></span></div>
+    <div class="feed-body">
+      <div class="d-flex justify-between gap-3 flex-wrap">
+        <div>
+          <div class="feed-title" style="font-size:1.05rem">{{ item.title }}</div>
+          <div class="feed-meta">{% if item.is_pinned %}<span data-icon="pin"></span> Pinned<span class="dot"></span>{% endif %}{% if item.is_public %}Public{% else %}Private{% endif %}<span class="dot"></span>{{ item.created_at|date:'M d, Y' }}</div>
+        </div>
+        <div class="d-flex gap-1">
+          <a class="btn-x btn-ghost-x" style="padding:.35rem .85rem;font-size:.78rem" href="{% url 'announcement-update' item.pk %}">Edit</a>
+          <a class="btn-x btn-danger-x" style="padding:.35rem .85rem;font-size:.78rem" href="{% url 'announcement-delete' item.pk %}">Delete</a>
+        </div>
+      </div>
+      <div class="mt-2 markdown-body">{{ item.content|linebreaks }}</div>
+    </div>
+  </div>
+  {% empty %}<div class="text-mid text-center" style="padding:40px">No announcements yet.</div>{% endfor %}
+</div>
+{% endblock %}

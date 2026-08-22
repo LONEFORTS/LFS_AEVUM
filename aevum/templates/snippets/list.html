@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Code Vault · Aevum{% endblock %}
+{% block eyebrow %}CODE VAULT{% endblock %}
+{% block topbar_title %}Code <em>Vault</em>{% endblock %}
+{% block content %}
+<div class="d-flex justify-between items-center mb-4 gap-3 flex-wrap">
+  <div>
+    <h1 class="display-title" style="font-size:clamp(1.7rem,3vw,2.2rem)">Code <em>Vault</em></h1>
+    <p class="text-mid mt-1">Upload code files and publish to GitHub in one tap.</p>
+  </div>
+  <a class="btn-x btn-primary-x" href="{% url 'snippet-create' %}"><span data-icon="plus"></span><span>New snippet</span></a>
+</div>
+<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+{% for snippet in snippets %}
+  <a class="x-tile" href="{% url 'snippet-detail' snippet.pk %}" style="text-decoration:none;color:inherit;display:block">
+    <div class="d-flex justify-between items-start gap-2 mb-2">
+      <div class="feed-title" style="font-size:1.05rem">{{ snippet.title }}</div>
+      <div class="d-flex gap-1">
+        {% if snippet.github_uploaded %}<span class="chip success"><span data-icon="github"></span></span>{% endif %}
+        {% if snippet.is_public %}<span class="chip accent">Public</span>{% endif %}
+      </div>
+    </div>
+    <span class="chip mono">{{ snippet.language|upper }}</span>
+    <pre class="code-preview mt-2">{{ snippet.display_content|truncatechars:180 }}</pre>
+  </a>
+{% empty %}
+  <div class="x-panel text-center" style="padding:60px 20px;grid-column:1/-1"><div class="av-x pink" style="margin:0 auto 12px"><span data-icon="code"></span></div><div class="text-mid">No code yet. Upload a file or paste code to start.</div></div>
+{% endfor %}
+</div>
+{% endblock %}

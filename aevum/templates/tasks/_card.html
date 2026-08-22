@@ -1,0 +1,18 @@
+<div class="task-card priority-{{ task.priority }}">
+  <div class="d-flex justify-between items-start gap-2">
+    <div style="flex:1;min-width:0">
+      <div class="t-title">{{ task.title }}</div>
+      <div class="text-mid small mt-1">{{ task.description|default:'No description'|truncatechars:80 }}</div>
+      <div class="d-flex gap-1 flex-wrap mt-2">
+        <span class="chip {% if task.priority == 'high' %}danger{% elif task.priority == 'medium' %}warn{% else %}success{% endif %}">{{ task.priority|title }}</span>
+        {% if task.due_date %}<span class="chip"><span data-icon="clock"></span> {{ task.due_date }}</span>{% endif %}
+      </div>
+    </div>
+    <a class="text-mut" href="{% url 'task-update' task.pk %}" style="color:var(--text-mut)"><span data-icon="edit"></span></a>
+  </div>
+  <div class="d-flex gap-1 flex-wrap mt-3">
+    <a class="btn-x btn-ghost-x" style="padding:.35rem .85rem;font-size:.78rem" href="{% url 'task-move' task.pk 'todo' %}">To Do</a>
+    <a class="btn-x btn-ghost-x" style="padding:.35rem .85rem;font-size:.78rem" href="{% url 'task-move' task.pk 'doing' %}">Doing</a>
+    <a class="btn-x btn-ghost-x" style="padding:.35rem .85rem;font-size:.78rem" href="{% url 'task-move' task.pk 'done' %}">Done</a>
+  </div>
+</div>

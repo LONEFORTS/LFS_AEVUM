@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Focus · Aevum{% endblock %}
+{% block eyebrow %}FOCUS{% endblock %}
+{% block topbar_title %}Deep <em>focus</em> timer{% endblock %}
+{% block content %}
+<div class="grid" style="grid-template-columns:1fr 1fr">
+  <div class="x-panel text-center" style="padding:32px 24px">
+    <span class="chip accent"><span data-icon="focus"></span> Pomodoro</span>
+    <div id="timerDisplay" class="timer-display mt-4 mb-4">25:00</div>
+    <form method="post" action="{% url 'focus-log' %}" id="focusForm" style="text-align:left">
+      {% csrf_token %}
+      <div class="form-group"><label class="form-label">Minutes</label>{{ form.minutes }}</div>
+      <div class="form-group"><label class="form-label">Session note</label>{{ form.note }}</div>
+      <div class="form-group"><label class="form-label">Productivity score (1–10)</label>{{ form.productivity_score }}</div>
+      <div class="d-flex gap-2 flex-wrap">
+        <button type="button" class="btn-x btn-outline-x" onclick="startTimer()"><span data-icon="play"></span><span>Start</span></button>
+        <button class="btn-x btn-primary-x" style="flex:1"><span data-icon="save"></span><span>Save completed session</span></button>
+      </div>
+    </form>
+  </div>
+  <div class="x-panel">
+    <div class="section-title">Recent <em>sessions</em></div>
+    {% for session in sessions %}
+    <div class="feed-x">
+      <div class="av-x gold"><span data-icon="focus"></span></div>
+      <div class="feed-body">
+        <div class="feed-title">{{ session.note|default:'Focus session' }}</div>
+        <div class="feed-meta">{{ session.minutes }} min<span class="dot"></span>Score {{ session.productivity_score }}/10<span class="dot"></span>{{ session.completed_at|date:'M d, H:i' }}</div>
+      </div>
+    </div>
+    {% empty %}<div class="text-mid small">No sessions yet.</div>{% endfor %}
+  </div>
+</div>
+{% endblock %}

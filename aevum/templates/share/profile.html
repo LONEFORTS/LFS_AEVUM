@@ -1,0 +1,42 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#000000">
+<title>{{ user_obj.username }} · Aevum portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head><body>
+<div class="portfolio-shell">
+  <div class="starfield" style="opacity:.5"></div>
+  <div class="portfolio-card">
+    <div class="d-flex items-center gap-2 mb-4">
+      <div class="brand-mark" style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#1d9bf0,#a78bfa);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-style:italic;font-weight:700;color:#fff">A</div>
+      <div class="text-hi" style="font-weight:800;letter-spacing:-.02em">Ae<em style="font-family:'Playfair Display',serif;font-weight:400">vum</em></div>
+      <span class="chip accent">Public portfolio</span>
+    </div>
+    <div class="d-flex items-center gap-4 flex-wrap mb-4">
+      <div class="portfolio-av" style="background:linear-gradient(135deg,{{ profile.accent_color|default:'#1d9bf0' }},#a78bfa)">{{ user_obj.username|first|upper }}</div>
+      <div style="flex:1;min-width:0">
+        <h1 class="display-title" style="font-size:clamp(2rem,4vw,3rem)">{{ profile.full_name|default:user_obj.username }}</h1>
+        <div class="text-mid mono mt-1">@{{ user_obj.username }}</div>
+        {% if profile.portfolio_headline %}<div class="italic-accent mt-3" style="font-size:1.2rem;color:var(--accent)">"{{ profile.portfolio_headline }}"</div>{% endif %}
+      </div>
+    </div>
+    {% if profile.bio %}<p style="font-size:1.08rem;line-height:1.7;color:var(--text)">{{ profile.bio|linebreaksbr }}</p>{% endif %}
+    <hr class="gradient-line">
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px">
+      {% if profile.course %}<div class="x-tile"><div class="eyebrow">Course</div><div class="text-hi mt-2" style="font-weight:700">{{ profile.course }}</div></div>{% endif %}
+      {% if profile.year_level %}<div class="x-tile"><div class="eyebrow">Year</div><div class="text-hi mt-2" style="font-weight:700">{{ profile.year_level }}</div></div>{% endif %}
+      {% if profile.github_username %}<div class="x-tile"><div class="eyebrow"><span data-icon="github"></span> GitHub</div><a class="mt-2 d-block" href="https://github.com/{{ profile.github_username }}" style="font-weight:700">@{{ profile.github_username }}</a></div>{% endif %}
+      {% if profile.phone %}<div class="x-tile"><div class="eyebrow">Phone</div><div class="text-hi mono mt-2" style="font-weight:700">{{ profile.phone }}</div></div>{% endif %}
+      {% if user_obj.email %}<div class="x-tile"><div class="eyebrow">Email</div><div class="text-hi mt-2 mono" style="font-weight:600;word-break:break-all;font-size:.9rem">{{ user_obj.email }}</div></div>{% endif %}
+      <div class="x-tile"><div class="eyebrow">Powered by</div><div class="italic-accent mt-2" style="font-size:1.1rem">Aevum</div></div>
+    </div>
+    <hr class="gradient-line">
+    <div class="text-mut small text-center">This portfolio was shared publicly from Aevum by @{{ user_obj.username }}.</div>
+  </div>
+</div>
+<script src="{% static 'js/app.js' %}"></script>
+</body></html>

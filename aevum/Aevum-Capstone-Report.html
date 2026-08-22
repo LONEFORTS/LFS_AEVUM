@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aevum Capstone Report</title>
+<style>
+body{font-family:Arial,sans-serif;line-height:1.6;max-width:980px;margin:0 auto;padding:32px;color:#111}h1,h2,h3{color:#172554}table{width:100%;border-collapse:collapse;margin:18px 0}th,td{border:1px solid #ccc;padding:10px;text-align:left}.cover{padding:80px 0;text-align:center}.box{border:2px dashed #999;padding:30px;margin:15px 0;text-align:center;color:#666}.small{font-size:14px;color:#555}
+</style>
+</head>
+<body>
+<div class="cover">
+<h1>AEVUM STUDENT MANAGEMENT SYSTEM</h1>
+<h2>Capstone Project Report</h2>
+<p>Prepared for final-year/capstone evaluation</p>
+</div>
+<h2>Abstract</h2>
+<p>Aevum is a premium student management and productivity platform developed using Django, SQLite, Bootstrap 5, JavaScript, and Django REST Framework. The system centralizes academic notes, tasks, events, code snippets, focus tracking, and public portfolio sharing in one web application. Aevum was designed especially for practical use by students who may rely on browser-based development environments such as GitHub Codespaces. The platform supports secure authentication, public share links, code-file upload, and direct code publishing to GitHub using repository credentials configured by the user. The system also exposes REST API endpoints to support future integration with mobile applications or React front ends.</p>
+<h2>Chapter 1 – Introduction</h2>
+<p>Students often use multiple disconnected tools for note taking, code storage, scheduling, and assignment management. This creates fragmentation, duplication of effort, and difficulty presenting work to teachers or external evaluators. Aevum solves this problem by unifying academic and technical workflows in a single premium web application.</p>
+<h2>Chapter 2 – Requirements Analysis</h2>
+<h3>Functional Requirements</h3>
+<ul>
+<li>User registration, login, logout, and admin access</li>
+<li>Profile management with GitHub configuration</li>
+<li>Create, update, view, and delete notes</li>
+<li>Tagging, pinning, and file attachments for notes</li>
+<li>Kanban-based task management</li>
+<li>Event scheduling</li>
+<li>Code snippet management and source-file upload</li>
+<li>Direct upload of code snippets to GitHub</li>
+<li>Focus session logging</li>
+<li>Search and public sharing</li>
+<li>REST API access for core resources</li>
+</ul>
+<h3>Non-Functional Requirements</h3>
+<ul>
+<li>Responsive UI suitable for phone users</li>
+<li>Simple SQLite setup</li>
+<li>Maintainable Django architecture</li>
+<li>Secure per-user data isolation</li>
+<li>Deployment-friendly design using WhiteNoise</li>
+</ul>
+<h2>Chapter 3 – System Design</h2>
+<h3>Architecture</h3>
+<p>Aevum follows a standard three-layer web architecture:</p>
+<ul>
+<li>Presentation layer: Django templates, Bootstrap 5, JavaScript</li>
+<li>Application layer: Django views, forms, business logic, GitHub integration</li>
+<li>Data layer: SQLite models for users, notes, tasks, events, snippets, and shares</li>
+</ul>
+<h3>ER Diagram Description</h3>
+<p>The central entity is the Django User model. Each User has one Profile. A User can create many Tags, Notes, Tasks, Events, CodeSnippets, FocusSessions, and SharedLinks. Notes have a many-to-many relationship with Tags. SharedLinks can reference either a Note, a CodeSnippet, or a public Profile page.</p>
+<div class="box">[Insert ER Diagram Image Here]</div>
+<h2>Chapter 4 – Implementation</h2>
+<p>The system was implemented as a Django project named Aevum with two main apps: hub and api. The hub app contains the main business logic, forms, views, templates, and GitHub upload helper. The api app contains serializers and REST API viewsets.</p>
+<h3>Premium UI</h3>
+<p>The UI uses dark glassmorphism, gradients, frosted panels, responsive layouts, Chart.js analytics, and a portfolio-style public page inspired by premium portfolio designs.</p>
+<h3>Screenshots Placeholders</h3>
+<div class="box">[Screenshot 1 – Landing Page]</div>
+<div class="box">[Screenshot 2 – Registration/Login]</div>
+<div class="box">[Screenshot 3 – Dashboard with Chart and Heatmap]</div>
+<div class="box">[Screenshot 4 – Notes Module]</div>
+<div class="box">[Screenshot 5 – Task Board]</div>
+<div class="box">[Screenshot 6 – Event Calendar]</div>
+<div class="box">[Screenshot 7 – Code Vault and GitHub Upload]</div>
+<div class="box">[Screenshot 8 – Public Share Portfolio Page]</div>
+<h2>Chapter 5 – Testing</h2>
+<table>
+<tr><th>Test Case</th><th>Expected Result</th><th>Status</th></tr>
+<tr><td>User registration</td><td>User redirected to dashboard after successful registration</td><td>Passed</td></tr>
+<tr><td>Tag creation</td><td>New tag saved to database</td><td>Passed</td></tr>
+<tr><td>Note creation</td><td>Note saved with attachment and tag</td><td>Passed</td></tr>
+<tr><td>Task movement</td><td>Task moved across Kanban states</td><td>Passed</td></tr>
+<tr><td>Event creation</td><td>Event visible in event list</td><td>Passed</td></tr>
+<tr><td>Code snippet creation</td><td>Snippet saved and visible in detail page</td><td>Passed</td></tr>
+<tr><td>GitHub upload without configuration</td><td>User receives friendly validation error</td><td>Passed</td></tr>
+<tr><td>Focus session logging</td><td>Session recorded successfully</td><td>Passed</td></tr>
+<tr><td>Search</td><td>Relevant notes/events/snippets returned</td><td>Passed</td></tr>
+<tr><td>Public profile sharing</td><td>External viewer can open public page without login</td><td>Passed</td></tr>
+<tr><td>API stats endpoint</td><td>Returns JSON counts correctly</td><td>Passed</td></tr>
+<tr><td>Cross-user note access</td><td>Unauthorized user receives 404</td><td>Passed</td></tr>
+</table>
+<h2>Chapter 6 – Conclusion</h2>
+<p>Aevum successfully demonstrates a capstone-level student management and productivity solution with both academic and developer-oriented features. The system is practical, visually polished, and deployment-ready for browser-based workflows. Its direct GitHub upload capability, public sharing support, and REST API make it stand out from basic CRUD-based student projects.</p>
+<h2>Future Scope</h2>
+<ul>
+<li>Live drag-and-drop Kanban updates</li>
+<li>Email notifications and reminders</li>
+<li>Multiple file uploads per note or assignment</li>
+<li>Role-based users such as teacher and student</li>
+<li>React or Flutter front-end integration</li>
+<li>PostgreSQL deployment for production scale</li>
+</ul>
+<h2>Appendix – Run Commands</h2>
+<pre>pip install -r requirements.txt
+python manage.py makemigrations hub
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py collectstatic --noinput
+python manage.py runserver 0.0.0.0:8000</pre>
+</body>
+</html>

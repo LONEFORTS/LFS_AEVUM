@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Assignments · Aevum{% endblock %}
+{% block eyebrow %}ASSIGNMENTS{% endblock %}
+{% block topbar_title %}Assignments{% endblock %}
+{% block content %}
+<div class="d-flex justify-between items-center mb-4 gap-3 flex-wrap">
+  <div>
+    <h1 class="display-title" style="font-size:clamp(1.7rem,3vw,2.2rem)"><em>Assignments</em></h1>
+    <p class="text-mid mt-1">Track coursework, due dates, files, and submission progress.</p>
+  </div>
+  <a class="btn-x btn-primary-x" href="{% url 'assignment-create' %}"><span data-icon="plus"></span><span>New assignment</span></a>
+</div>
+<div class="x-panel" style="padding:0;overflow:hidden">
+<div style="overflow-x:auto"><table class="table-x">
+  <thead><tr><th>Title</th><th>Course</th><th>Due</th><th>Status</th><th>Priority</th><th></th></tr></thead>
+  <tbody>
+    {% for a in assignments %}
+    <tr>
+      <td><a class="feed-title" href="{% url 'assignment-detail' a.pk %}">{{ a.title }}</a>{% if a.github_required %} <span class="text-mut" data-icon="github" style="display:inline-block;vertical-align:-3px"></span>{% endif %}</td>
+      <td class="text-mid">{{ a.course }}</td>
+      <td class="text-mid mono">{{ a.due_date }}</td>
+      <td><span class="chip {% if a.status == 'submitted' %}accent{% elif a.status == 'reviewed' %}success{% elif a.status == 'closed' %}danger{% endif %}">{{ a.status|title }}</span></td>
+      <td><span class="chip {% if a.priority == 'high' %}danger{% elif a.priority == 'medium' %}warn{% else %}success{% endif %}">{{ a.priority|title }}</span></td>
+      <td><a class="btn-x btn-ghost-x" style="padding:.35rem .85rem;font-size:.8rem" href="{% url 'assignment-detail' a.pk %}"><span data-icon="arrow"></span></a></td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6" class="text-mid text-center" style="padding:60px 20px">No assignments yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table></div>
+</div>
+{% endblock %}

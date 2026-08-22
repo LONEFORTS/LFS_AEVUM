@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}{{ assignment.title }} · Aevum{% endblock %}
+{% block eyebrow %}ASSIGNMENT{% endblock %}
+{% block topbar_title %}{{ assignment.title }}{% endblock %}
+{% block content %}
+<div class="x-panel mb-4">
+  <div class="d-flex justify-between items-start gap-3 flex-wrap">
+    <div>
+      <div class="d-flex gap-2 flex-wrap mb-3">
+        <span class="chip">{{ assignment.course }}</span>
+        <span class="chip {% if assignment.status == 'submitted' %}accent{% elif assignment.status == 'reviewed' %}success{% elif assignment.status == 'closed' %}danger{% endif %}">{{ assignment.status|title }}</span>
+        <span class="chip {% if assignment.priority == 'high' %}danger{% elif assignment.priority == 'medium' %}warn{% else %}success{% endif %}">{{ assignment.priority|title }}</span>
+        {% if assignment.github_required %}<span class="chip"><span data-icon="github"></span> GitHub required</span>{% endif %}
+      </div>
+      <h1 class="display-title" style="font-size:clamp(1.6rem,3vw,2.2rem)">{{ assignment.title }}</h1>
+      <div class="text-mid mono small mt-2"><span data-icon="clock"></span> Due {{ assignment.due_date }}</div>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a class="btn-x btn-outline-x" href="{% url 'assignment-update' assignment.pk %}"><span data-icon="edit"></span><span>Edit</span></a>
+      <a class="btn-x btn-outline-x" href="{% url 'share-assignment' assignment.pk %}"><span data-icon="share"></span><span>Share</span></a>
+      <a class="btn-x btn-primary-x" href="{% url 'submission-create' assignment.pk %}"><span data-icon="send"></span><span>Submit work</span></a>
+      <a class="btn-x btn-danger-x" href="{% url 'assignment-delete' assignment.pk %}"><span data-icon="trash"></span></a>
+    </div>
+  </div>
+</div>
+<div class="grid" style="grid-template-columns:2fr 1fr">
+  <div class="x-panel">
+    <div class="section-title">Instructions</div>
+    <div class="markdown-body">{{ assignment.instructions|linebreaks }}</div>
+    {% if assignment.attachment %}<hr class="gradient-line"><div><span data-icon="download"></span> <a href="{{ assignment.attachment.url }}">Download attached brief</a></div>{% endif %}
+  </div>
+  <div class="x-panel">
+    <div class="section-title">My <em>submissions</em></div>
+    {% for s in submissions %}
+    <div class="feed-x">
+      <div class="av-x success"><span data-icon="send"></span></div>
+      <div class="feed-body">
+        <div class="feed-title">{{ s.title }}</div>
+        <div class="feed-meta">{{ s.status|title }}<span class="dot"></span>{{ s.created_at|date:'M d, Y' }}</div>
+        {% if s.github_link %}<div class="small mt-1"><span data-icon="github"></span> <a href="{{ s.github_link }}">{{ s.github_link|truncatechars:40 }}</a></div>{% endif %}
+        {% if s.submitted_file %}<div class="small"><span data-icon="download"></span> <a href="{{ s.submitted_file.url }}">Download file</a></div>{% endif %}
+      </div>
+    </div>
+    {% empty %}<div class="text-mid small">No submissions yet.</div>{% endfor %}
+  </div>
+</div>
+{% endblock %}

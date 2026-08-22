@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Tasks · Aevum{% endblock %}
+{% block eyebrow %}TASKS{% endblock %}
+{% block topbar_title %}Kanban <em>board</em>{% endblock %}
+{% block content %}
+<div class="d-flex justify-between items-center mb-4 gap-3 flex-wrap">
+  <div>
+    <h1 class="display-title" style="font-size:clamp(1.7rem,3vw,2.2rem)">Kanban <em>board</em></h1>
+    <p class="text-mid mt-1">Move tasks across To Do · Doing · Done.</p>
+  </div>
+  <a class="btn-x btn-primary-x" href="{% url 'task-create' %}"><span data-icon="plus"></span><span>New task</span></a>
+</div>
+<div class="grid-3">
+  <div class="kanban-col"><h3>To Do <span class="chip">{{ todo_tasks|length }}</span></h3>{% for task in todo_tasks %}{% include 'tasks/_card.html' with task=task %}{% empty %}<div class="text-mid small">Nothing here.</div>{% endfor %}</div>
+  <div class="kanban-col"><h3>Doing <span class="chip accent">{{ doing_tasks|length }}</span></h3>{% for task in doing_tasks %}{% include 'tasks/_card.html' with task=task %}{% empty %}<div class="text-mid small">Nothing here.</div>{% endfor %}</div>
+  <div class="kanban-col"><h3>Done <span class="chip success">{{ done_tasks|length }}</span></h3>{% for task in done_tasks %}{% include 'tasks/_card.html' with task=task %}{% empty %}<div class="text-mid small">Nothing here.</div>{% endfor %}</div>
+</div>
+{% endblock %}

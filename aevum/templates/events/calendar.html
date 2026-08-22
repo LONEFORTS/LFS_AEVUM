@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Events · Aevum{% endblock %}
+{% block eyebrow %}EVENTS{% endblock %}
+{% block topbar_title %}Event <em>calendar</em>{% endblock %}
+{% block content %}
+<div class="d-flex justify-between items-center mb-4 gap-3 flex-wrap">
+  <div>
+    <h1 class="display-title" style="font-size:clamp(1.7rem,3vw,2.2rem)">Event <em>calendar</em></h1>
+    <p class="text-mid mt-1">Exams, deadlines, and academic milestones.</p>
+  </div>
+  <a class="btn-x btn-primary-x" href="{% url 'event-create' %}"><span data-icon="plus"></span><span>New event</span></a>
+</div>
+<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+{% for event in events %}
+  <div class="x-tile" style="border-left:3px solid {{ event.color|default:'#1d9bf0' }}">
+    <div class="d-flex justify-between items-start gap-2 mb-2">
+      <div>
+        <div class="feed-title" style="font-size:1.05rem">{{ event.title }}</div>
+        <div class="feed-meta mt-1"><span data-icon="event"></span> {{ event.start_date }}{% if event.end_date %} → {{ event.end_date }}{% endif %}</div>
+      </div>
+      {% if event.is_public %}<span class="chip accent">Public</span>{% endif %}
+    </div>
+    <p class="text-mid small" style="min-height:44px">{{ event.description|default:'No description'|truncatechars:110 }}</p>
+    <div class="d-flex gap-1"><a class="btn-x btn-ghost-x" style="padding:.35rem .85rem;font-size:.78rem" href="{% url 'event-update' event.pk %}">Edit</a><a class="btn-x btn-danger-x" style="padding:.35rem .85rem;font-size:.78rem" href="{% url 'event-delete' event.pk %}">Delete</a></div>
+  </div>
+{% empty %}
+  <div class="x-panel text-center" style="padding:60px 20px;grid-column:1/-1"><div class="av-x" style="margin:0 auto 12px"><span data-icon="event"></span></div><div class="text-mid">No events yet.</div></div>
+{% endfor %}
+</div>
+{% endblock %}

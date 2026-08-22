@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Search · Aevum{% endblock %}
+{% block eyebrow %}SEARCH{% endblock %}
+{% block topbar_title %}Global <em>search</em>{% endblock %}
+{% block content %}
+<form method="get" class="x-panel" style="padding:14px 20px">
+  <div class="d-flex gap-3 items-center">
+    <span class="text-mut" data-icon="search" style="display:inline-flex"></span>
+    <input type="text" name="q" value="{{ query }}" class="no-auto" placeholder="Search notes, assignments, tasks, events, announcements, code..." autofocus style="flex:1;background:transparent!important;border:0!important;padding:.4rem 0!important;font-size:1.05rem;color:var(--text-hi)!important">
+    <button class="btn-x btn-primary-x">Search</button>
+  </div>
+</form>
+{% if query %}
+<div class="grid mt-4" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px">
+  <div class="x-panel"><div class="section-title">Notes</div>{% for i in notes %}<div class="feed-x"><div class="av-x violet"><span data-icon="note"></span></div><div class="feed-body"><a class="feed-title" href="{% url 'note-detail' i.pk %}">{{ i.title }}</a><div class="feed-meta">{{ i.content|truncatechars:70 }}</div></div></div>{% empty %}<div class="text-mid small">No results.</div>{% endfor %}</div>
+  <div class="x-panel"><div class="section-title">Assignments</div>{% for i in assignments %}<div class="feed-x"><div class="av-x success"><span data-icon="assign"></span></div><div class="feed-body"><a class="feed-title" href="{% url 'assignment-detail' i.pk %}">{{ i.title }}</a><div class="feed-meta">{{ i.course }}<span class="dot"></span>due {{ i.due_date }}</div></div></div>{% empty %}<div class="text-mid small">No results.</div>{% endfor %}</div>
+  <div class="x-panel"><div class="section-title">Tasks</div>{% for i in tasks %}<div class="feed-x"><div class="av-x"><span data-icon="task"></span></div><div class="feed-body"><div class="feed-title">{{ i.title }}</div><div class="feed-meta">{{ i.status|title }}<span class="dot"></span>{{ i.priority|title }}</div></div></div>{% empty %}<div class="text-mid small">No results.</div>{% endfor %}</div>
+  <div class="x-panel"><div class="section-title">Events</div>{% for i in events %}<div class="feed-x"><div class="av-x"><span data-icon="event"></span></div><div class="feed-body"><div class="feed-title">{{ i.title }}</div><div class="feed-meta">{{ i.start_date }}</div></div></div>{% empty %}<div class="text-mid small">No results.</div>{% endfor %}</div>
+  <div class="x-panel"><div class="section-title">Announcements</div>{% for i in announcements %}<div class="feed-x"><div class="av-x pink"><span data-icon="news"></span></div><div class="feed-body"><div class="feed-title">{{ i.title }}</div><div class="feed-meta">{{ i.content|truncatechars:70 }}</div></div></div>{% empty %}<div class="text-mid small">No results.</div>{% endfor %}</div>
+  <div class="x-panel"><div class="section-title">Code</div>{% for i in snippets %}<div class="feed-x"><div class="av-x pink"><span data-icon="code"></span></div><div class="feed-body"><a class="feed-title" href="{% url 'snippet-detail' i.pk %}">{{ i.title }}</a><div class="feed-meta">{{ i.language|upper }}</div></div></div>{% empty %}<div class="text-mid small">No results.</div>{% endfor %}</div>
+</div>
+{% else %}
+<div class="x-panel text-center mt-4" style="padding:80px 20px"><div class="av-x" style="margin:0 auto 16px;width:56px;height:56px"><span data-icon="search"></span></div><div class="text-mid">Type a keyword to search across your workspace.</div></div>
+{% endif %}
+{% endblock %}

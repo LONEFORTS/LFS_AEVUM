@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block title %}Home · Aevum{% endblock %}
+{% block eyebrow %}HOME{% endblock %}
+{% block topbar_title %}Welcome, <em>{{ user.username }}</em>{% endblock %}
+{% block content %}
+
+<section class="x-hero mb-4">
+  <div class="d-flex justify-between items-start gap-3 flex-wrap">
+    <div style="max-width:640px">
+      <span class="eyebrow mb-3" style="display:inline-block">DASHBOARD · v2</span>
+      <h1 class="display-title" style="font-size:clamp(1.8rem,3.6vw,2.8rem);margin-top:8px">Good to see you again, <em>{{ user.username }}</em>.</h1>
+      <p class="subtitle mt-3">One tap to write a note, submit an assignment, publish code to GitHub, or share your live portfolio.</p>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a class="btn-x btn-primary-x" href="{% url 'assignment-create' %}"><span data-icon="plus"></span><span>New assignment</span></a>
+      <a class="btn-x btn-outline-x" href="{% url 'snippet-create' %}"><span data-icon="code"></span><span>New code</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="grid-6 mb-4">
+  <div class="x-stat"><span class="icon-abs"><span data-icon="note"></span></span><div class="label">Notes</div><div class="value mono">{{ stats.notes }}</div></div>
+  <div class="x-stat"><span class="icon-abs"><span data-icon="assign"></span></span><div class="label">Assignments</div><div class="value mono">{{ stats.assignments }}</div></div>
+  <div class="x-stat"><span class="icon-abs"><span data-icon="check"></span></span><div class="label">Done tasks</div><div class="value mono">{{ stats.tasks_done }}</div></div>
+  <div class="x-stat"><span class="icon-abs"><span data-icon="github"></span></span><div class="label">GitHub sync</div><div class="value mono">{{ stats.github_uploaded }}</div></div>
+  <div class="x-stat"><span class="icon-abs"><span data-icon="att"></span></span><div class="label">Attendance</div><div class="value mono">{{ stats.attendance_rate }}<em>%</em></div></div>
+  <div class="x-stat"><span class="icon-abs" style="color:var(--warn)"><span data-icon="fire"></span></span><div class="label">Streak</div><div class="value mono">{{ stats.streak }}</div></div>
+</div>
+
+<div class="grid" style="grid-template-columns:2fr 1fr">
+  <div class="x-panel">
+    <div class="section-title">Academic activity <em>overview</em> <span class="chip"><span data-icon="chart"></span> Live</span></div>
+    <canvas id="statsChart" height="120"></canvas>
+  </div>
+  <div class="x-panel">
+    <div class="section-title">Pinned <em>announcements</em></div>
+    {% for item in announcements %}
+    <div class="feed-x">
+      <div class="av-x pink"><span data-icon="news"></span></div>
+      <div class="feed-body">
+        <div class="feed-title">{{ item.title }}</div>
+        <div class="text-mid small mt-1">{{ item.content|truncatechars:70 }}</div>
+      </div>
+    </div>
+    {% empty %}<div class="text-mid small">No announcements yet.</div>{% endfor %}
+  </div>
+</div>
+
+<div class="grid mt-4" style="grid-template-columns:1fr 1fr">
+  <div class="x-panel">
+    <div class="section-title">Due <em>assignments</em> <a href="{% url 'assignment-list' %}" class="text-mid small" style="font-weight:500">View all →</a></div>
+    {% for a in due_assignments %}
+    <div class="feed-x">
+      <div class="av-x success"><span data-icon="assign"></span></div>
+      <div class="feed-body">
+        <div class="d-flex justify-between gap-3 flex-wrap">
+          <div>
+            <a class="feed-title" href="{% url 'assignment-detail' a.pk %}">{{ a.title }}</a>
+            <div class="feed-meta">{{ a.course }}<span class="dot"></span>{{ a.status|title }}</div>
+          </div>
+          <div class="text-end">
+            <span class="chip {% if a.priority == 'high' %}danger{% elif a.priority == 'medium' %}warn{% else %}success{% endif %}">{{ a.priority|title }}</span>
+            <div class="feed-meta mt-1">{{ a.due_date }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}<div class="text-mid small">No assignments yet.</div>{% endfor %}
+  </div>
+
+  <div class="x-panel">
+    <div class="section-title">Upcoming <em>events</em> <a href="{% url 'event-calendar' %}" class="text-mid small" style="font-weight:500">Calendar →</a></div>
+    {% for event in events %}
+    <div class="feed-x">
+      <div class="av-x" style="color:{{ event.color|default:'#1d9bf0' }}"><span data-icon="event"></span></div>
+      <div class="feed-body">
+        <div class="d-flex justify-between gap-3">
+          <div><div class="feed-title">{{ event.title }}</div><div class="feed-meta">{{ event.description|truncatechars:55|default:'—' }}</div></div>
+          <div class="feed-meta">{{ event.start_date }}</div>
+        </div>
+      </div>
+    </div>
+    {% empty %}<div class="text-mid small">No events yet.</div>{% endfor %}
+  </div>
+</div>
+
+<div class="grid mt-4" style="grid-template-columns:1fr 1fr">
+  <div class="x-panel">
+    <div class="section-title">Recent <em>notes</em></div>
+    {% for note in recent_notes %}
+    <div class="feed-x">
+      <div class="av-x violet"><span data-icon="note"></span></div>
+      <div class="feed-body">
+        <a class="feed-title" href="{% url 'note-detail' note.pk %}">{{ note.title }}</a>
+        <div class="feed-meta">{% if note.is_pinned %}Pinned<span class="dot"></span>{% endif %}{% if note.is_public %}Public{% else %}Private{% endif %}</div>
+      </div>
+    </div>
+    {% empty %}<div class="text-mid small">No notes yet.</div>{% endfor %}
+  </div>
+  <div class="x-panel">
+    <div class="section-title">Recent <em>code</em> uploads</div>
+    {% for snippet in recent_snippets %}
+    <div class="feed-x">
+      <div class="av-x pink"><span data-icon="code"></span></div>
+      <div class="feed-body">
+        <a class="feed-title" href="{% url 'snippet-detail' snippet.pk %}">{{ snippet.title }}</a>
+        <div class="feed-meta">{{ snippet.language|upper }}{% if snippet.github_uploaded %}<span class="dot"></span>Synced to GitHub{% endif %}</div>
+      </div>
+    </div>
+    {% empty %}<div class="text-mid small">No code snippets yet.</div>{% endfor %}
+  </div>
+</div>
+
+<div class="x-panel mt-4">
+  <div class="section-title">Consistency <em>heatmap</em> · last 28 days
+    <span class="d-flex items-center gap-2 text-mut small" style="font-weight:500">
+      Less <span class="heat" style="width:14px;height:14px"></span><span class="heat l1" style="width:14px;height:14px"></span><span class="heat l2" style="width:14px;height:14px"></span><span class="heat l3" style="width:14px;height:14px"></span><span class="heat l4" style="width:14px;height:14px"></span> More
+    </span>
+  </div>
+  <div class="heatmap-grid">
+    {% for item in heatmap_days %}<div class="heat l{{ item.level }}" title="{{ item.date }}: {{ item.count }} activity"></div>{% endfor %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const ctx = document.getElementById('statsChart');
+if(ctx){
+  new Chart(ctx,{type:'bar',data:{labels:['Notes','Assign','ToDo','Doing','Done','Code','News'],datasets:[{data:[{{ stats.notes }},{{ stats.assignments }},{{ stats.tasks_todo }},{{ stats.tasks_doing }},{{ stats.tasks_done }},{{ stats.snippets }},{{ stats.announcements }}],backgroundColor:['#1d9bf0','#00ba7c','#f5a524','#a78bfa','#ef4444','#f472b6','#e4b667'],borderRadius:8,borderSkipped:false,barPercentage:.65}]},options:{plugins:{legend:{display:false},tooltip:{backgroundColor:'#111114',borderColor:'#26262a',borderWidth:1,titleColor:'#fff',bodyColor:'#a8adb3',padding:12,cornerRadius:8}},scales:{x:{ticks:{color:'#6b7075',font:{family:'JetBrains Mono',size:11}},grid:{display:false}},y:{beginAtZero:true,ticks:{color:'#6b7075',stepSize:1,font:{family:'JetBrains Mono',size:11}},grid:{color:'#1c1c20',drawBorder:false}}}}});
+}
+</script>
+{% endblock %}

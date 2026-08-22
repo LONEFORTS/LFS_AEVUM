@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Attendance · Aevum{% endblock %}
+{% block eyebrow %}ATTENDANCE{% endblock %}
+{% block topbar_title %}Attendance <em>tracker</em>{% endblock %}
+{% block content %}
+<div class="mb-4">
+  <h1 class="display-title" style="font-size:clamp(1.7rem,3vw,2.2rem)">Attendance <em>tracker</em></h1>
+  <p class="text-mid mt-1">Log daily presence and see live attendance stats on your dashboard.</p>
+</div>
+<div class="grid" style="grid-template-columns:1fr 2fr">
+  <div class="x-form-card">
+    <div class="section-title">Log attendance</div>
+    <form method="post" action="{% url 'attendance-create' %}">
+      {% csrf_token %}
+      {% for field in form %}<div class="form-group"><label class="form-label">{{ field.label }}</label>{{ field }}</div>{% endfor %}
+      <button class="btn-x btn-primary-x"><span data-icon="save"></span><span>Save attendance</span></button>
+    </form>
+  </div>
+  <div class="x-panel" style="padding:0;overflow:hidden">
+    <div style="padding:22px 22px 4px"><div class="section-title" style="margin:0">Attendance <em>history</em></div></div>
+    <div style="overflow-x:auto"><table class="table-x">
+      <thead><tr><th>Date</th><th>Status</th><th>Note</th></tr></thead>
+      <tbody>
+        {% for record in records %}
+        <tr><td class="mono">{{ record.date }}</td><td><span class="chip {% if record.status == 'present' %}success{% elif record.status == 'absent' %}danger{% elif record.status == 'late' %}warn{% else %}accent{% endif %}">{{ record.status|title }}</span></td><td class="text-mid">{{ record.note|default:'—' }}</td></tr>
+        {% empty %}
+        <tr><td colspan="3" class="text-mid text-center" style="padding:60px 20px">No attendance records yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table></div>
+  </div>
+</div>
+{% endblock %}

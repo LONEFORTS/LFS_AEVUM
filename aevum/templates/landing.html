@@ -1,0 +1,76 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Aevum · The student operating system</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head><body>
+<div class="landing-shell">
+  <nav class="landing-nav" id="landingNav">
+    <a href="{% url 'landing' %}" class="brand-x" style="margin:0;padding:6px 10px">
+      <span class="brand-mark">A</span>
+      <span class="brand-word">Ae<em>vum</em></span>
+    </a>
+    <div class="d-flex items-center gap-2">
+      <a class="btn-x btn-ghost-x" href="{% url 'login' %}">Login</a>
+      <a class="btn-x btn-primary-x" href="{% url 'register' %}">Sign up</a>
+    </div>
+  </nav>
+
+  <section class="landing-hero">
+    <div class="starfield"></div>
+    <div class="landing-hero-inner">
+      <span class="hero-tag reveal in"><span class="dot-live"></span> <span class="mono" style="letter-spacing:.15em;font-size:.75rem">LIVE · v2 · PREMIUM</span></span>
+      <h1 class="display-title reveal in" style="max-width:16ch">The <em>student</em> operating system, redesigned.</h1>
+      <p class="subtitle reveal in mt-3" style="font-size:1.15rem;max-width:640px">Notes. Assignments. Attendance. Code with one-tap GitHub upload. Public portfolio sharing. All in one legendary dark interface designed for phones, Codespaces, and PythonAnywhere.</p>
+      <div class="d-flex gap-3 flex-wrap mt-5 reveal">
+        <a href="{% url 'register' %}" class="btn-x btn-primary-x btn-lg"><span data-icon="sparkle"></span><span>Create account</span></a>
+        <a href="{% url 'login' %}" class="btn-x btn-outline-x btn-lg"><span data-icon="arrow"></span><span>I have an account</span></a>
+      </div>
+
+      <div class="d-flex gap-3 flex-wrap mt-5 reveal">
+        <span class="chip"><span data-icon="check"></span> No Termux</span>
+        <span class="chip"><span data-icon="check"></span> Works on phone</span>
+        <span class="chip"><span data-icon="check"></span> Public share link</span>
+        <span class="chip gold"><span data-icon="star"></span> PhD-grade design</span>
+      </div>
+
+      <div class="feat-grid reveal mt-5">
+        <div class="feat-tile"><div class="icn"><span data-icon="note"></span></div><h4>Smart Notes</h4><p>Markdown, tags, pinning, attachments, and public share links.</p></div>
+        <div class="feat-tile"><div class="icn" style="color:var(--success)"><span data-icon="assign"></span></div><h4>Assignments</h4><p>Due dates, priority, file uploads, and GitHub-ready submissions.</p></div>
+        <div class="feat-tile"><div class="icn" style="color:var(--warn)"><span data-icon="att"></span></div><h4>Attendance</h4><p>Log presence and see live attendance rate on your dashboard.</p></div>
+        <div class="feat-tile"><div class="icn" style="color:var(--pink)"><span data-icon="code"></span></div><h4>Code Vault</h4><p>Upload code files, paste snippets, publish to GitHub in one tap.</p></div>
+        <div class="feat-tile"><div class="icn" style="color:var(--violet)"><span data-icon="task"></span></div><h4>Kanban tasks</h4><p>To Do · Doing · Done with priorities and due dates.</p></div>
+        <div class="feat-tile"><div class="icn"><span data-icon="event"></span></div><h4>Events</h4><p>Colour-coded academic calendar with public share.</p></div>
+        <div class="feat-tile"><div class="icn" style="color:var(--gold)"><span data-icon="focus"></span></div><h4>Focus timer</h4><p>Pomodoro sessions with productivity score and streak.</p></div>
+        <div class="feat-tile"><div class="icn" style="color:var(--danger)"><span data-icon="news"></span></div><h4>Announcements</h4><p>Pinned, public and private notices for your workspace.</p></div>
+      </div>
+
+      <div class="reveal mt-5">
+        <div class="x-panel" style="max-width:800px;margin:0 auto">
+          <div class="eyebrow mb-2">How it works on a phone</div>
+          <h2 class="italic-accent" style="font-size:1.6rem;margin-bottom:12px">Push code directly to your GitHub repo — in one tap.</h2>
+          <p class="text-mid mb-4">Save your GitHub username, repository, branch, and Personal Access Token in Profile Settings. Paste code or upload a source file, then press "Upload to GitHub" on any snippet.</p>
+          <div class="code-block">
+<span style="color:#a8adb3">// One-tap publish flow</span>
+Aevum → Code Vault → New snippet
+       ↓
+   Upload to GitHub  <span style="color:var(--success)">✓</span>
+       ↓
+   github.com/you/repo
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal mt-5 text-center">
+        <p class="italic-accent" style="font-size:1.6rem;max-width:36ch;margin:0 auto 20px">"A capstone-grade workspace. Serious, beautiful, and finally professional."</p>
+        <a href="{% url 'register' %}" class="btn-x btn-primary-x btn-lg"><span data-icon="lightning"></span><span>Get started free</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="{% static 'js/app.js' %}"></script>
+</body></html>

@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Notes · Aevum{% endblock %}
+{% block eyebrow %}NOTES{% endblock %}
+{% block topbar_title %}Smart <em>notes</em>{% endblock %}
+{% block content %}
+<div class="d-flex justify-between items-center mb-4 gap-3 flex-wrap">
+  <div>
+    <h1 class="display-title" style="font-size:clamp(1.7rem,3vw,2.2rem)">Smart <em>notes</em></h1>
+    <p class="text-mid mt-1">Markdown · tags · pinning · public share links.</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn-x btn-outline-x" href="{% url 'tag-create' %}"><span data-icon="tag"></span><span>New tag</span></a>
+    <a class="btn-x btn-primary-x" href="{% url 'note-create' %}"><span data-icon="plus"></span><span>New note</span></a>
+  </div>
+</div>
+<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+{% for note in notes %}
+  <a class="x-tile" href="{% url 'note-detail' note.pk %}" style="text-decoration:none;color:inherit;display:block">
+    <div class="d-flex justify-between items-start gap-2 mb-2">
+      <div class="feed-title" style="font-size:1.05rem">{{ note.title }}</div>
+      <div class="d-flex gap-1">{% if note.is_pinned %}<span class="chip warn"><span data-icon="pin"></span></span>{% endif %}{% if note.is_public %}<span class="chip accent">Public</span>{% endif %}</div>
+    </div>
+    <p class="text-mid small" style="min-height:56px">{{ note.content|truncatechars:130 }}</p>
+    <div class="d-flex flex-wrap gap-1 mb-2">{% for tag in note.tags.all %}<span class="chip" style="background:{{ tag.color }}22;border-color:{{ tag.color }}55;color:{{ tag.color }}">{{ tag.name }}</span>{% endfor %}</div>
+    <div class="feed-meta">{{ note.updated_at|date:'M d, Y' }}</div>
+  </a>
+{% empty %}
+  <div class="x-panel text-center" style="padding:60px 20px;grid-column:1/-1"><div class="av-x" style="margin:0 auto 12px"><span data-icon="note"></span></div><div class="text-mid">No notes yet. Create your first premium study note.</div></div>
+{% endfor %}
+</div>
+{% endblock %}

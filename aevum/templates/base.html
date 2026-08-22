@@ -1,0 +1,95 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>{% block title %}Aevum{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet">
+{% block extra_css %}{% endblock %}
+</head>
+<body>
+<div class="app-shell">
+  {% if user.is_authenticated %}
+  <aside class="sidebar-x">
+    <a class="brand-x" href="{% url 'dashboard' %}">
+      <span class="brand-mark">A</span>
+      <span class="brand-word">Ae<em>vum</em></span>
+    </a>
+    <nav class="nav-x">
+      <a href="{% url 'dashboard' %}"><span data-icon="home"></span><span>Home</span></a>
+      <a href="{% url 'note-list' %}"><span data-icon="note"></span><span>Notes</span></a>
+      <a href="{% url 'assignment-list' %}"><span data-icon="assign"></span><span>Assignments</span></a>
+      <a href="{% url 'task-board' %}"><span data-icon="task"></span><span>Tasks</span></a>
+      <a href="{% url 'event-calendar' %}"><span data-icon="event"></span><span>Events</span></a>
+      <a href="{% url 'attendance-list' %}"><span data-icon="att"></span><span>Attendance</span></a>
+      <a href="{% url 'announcement-list' %}"><span data-icon="news"></span><span>Announcements</span></a>
+      <a href="{% url 'snippet-list' %}"><span data-icon="code"></span><span>Code Vault</span></a>
+      <a href="{% url 'focus-timer' %}"><span data-icon="focus"></span><span>Focus</span></a>
+      <a href="{% url 'search' %}?q="><span data-icon="search"></span><span>Search</span></a>
+      <a href="{% url 'profile' %}"><span data-icon="user"></span><span>Profile</span></a>
+      <a href="{% url 'share-profile' %}"><span data-icon="share"></span><span>Share</span></a>
+    </nav>
+    <div class="sidebar-cta mt-3">
+      <a class="btn-x btn-primary-x btn-block" href="{% url 'assignment-create' %}"><span data-icon="plus"></span><span>Compose</span></a>
+    </div>
+    <div class="sidebar-foot">
+      <div class="sidebar-user">
+        <div class="av">{{ user.username|first|upper }}</div>
+        <div style="min-width:0;flex:1">
+          <div class="text-hi" style="font-weight:700;font-size:.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ user.username }}</div>
+          <a href="{% url 'logout' %}" class="text-mut small">Log out</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+  {% endif %}
+
+  <main class="main-x">
+    <header class="topbar-x">
+      <div class="topbar-inner">
+        <div class="topbar-title">
+          <span class="eyebrow">{% block eyebrow %}Aevum{% endblock %}</span>
+          <span class="h">{% block topbar_title %}Premium student OS{% endblock %}</span>
+        </div>
+        <div class="d-flex items-center gap-2 flex-wrap">
+          {% if user.is_authenticated %}
+          <a class="btn-x btn-ghost-x" href="{% url 'search' %}?q="><span data-icon="search"></span></a>
+          <a class="btn-x btn-outline-x" href="{% url 'share-profile' %}"><span data-icon="share"></span><span>Share</span></a>
+          <a class="btn-x btn-primary-x" href="{% url 'snippet-create' %}"><span data-icon="plus"></span><span>New</span></a>
+          {% else %}
+          <a class="btn-x btn-outline-x" href="{% url 'login' %}">Login</a>
+          <a class="btn-x btn-primary-x" href="{% url 'register' %}">Sign up</a>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <div class="content-x">
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert-x alert-{{ message.tags|default:'info' }}"><span data-icon="{% if message.tags == 'success' %}check2{% elif message.tags == 'error' %}alert{% else %}sparkle{% endif %}"></span><span>{{ message }}</span></div>
+        {% endfor %}
+      {% endif %}
+      {% block content %}{% endblock %}
+    </div>
+
+    {% if user.is_authenticated %}
+    <nav class="mobile-nav-x">
+      <a href="{% url 'dashboard' %}"><span data-icon="home"></span></a>
+      <a href="{% url 'assignment-list' %}"><span data-icon="assign"></span></a>
+      <a href="{% url 'snippet-list' %}"><span data-icon="code"></span></a>
+      <a href="{% url 'search' %}?q="><span data-icon="search"></span></a>
+      <a href="{% url 'profile' %}"><span data-icon="user"></span></a>
+    </nav>
+    {% endif %}
+  </main>
+</div>
+<script src="{% static 'js/app.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

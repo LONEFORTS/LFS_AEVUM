@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Share link · Aevum{% endblock %}
+{% block eyebrow %}SHARE{% endblock %}
+{% block topbar_title %}Public <em>share</em> link{% endblock %}
+{% block content %}
+<div class="x-panel" style="max-width:880px;margin:0 auto">
+  <div class="d-flex items-center gap-3 mb-3">
+    <div class="av-x success" style="width:52px;height:52px"><span data-icon="share"></span></div>
+    <div><div class="feed-title" style="font-size:1.2rem">Your public link is ready</div><div class="text-mid">Anyone with this link can view it — no login required.</div></div>
+  </div>
+  <div class="code-block mono" data-copy="{{ share_url }}" onclick="copyText(this)" style="cursor:pointer;color:var(--accent);text-align:center;padding:24px;font-size:.95rem">{{ share_url }}</div>
+  <div class="text-mut small text-center mb-3 mt-2">Tap the link above to copy it to your clipboard.</div>
+  <div class="d-flex gap-2 flex-wrap justify-center">
+    <a class="btn-x btn-primary-x" href="{{ share_url }}" target="_blank"><span data-icon="external"></span><span>Open public page</span></a>
+    <a class="btn-x btn-outline-x" href="{% url 'dashboard' %}"><span data-icon="arrow"></span><span>Back to dashboard</span></a>
+  </div>
+</div>
+{% endblock %}

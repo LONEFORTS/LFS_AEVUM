@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} · Aevum{% endblock %}
+{% block eyebrow %}ASSIGNMENTS{% endblock %}
+{% block topbar_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="x-form-card" style="max-width:960px;margin:0 auto">
+  <div class="section-title">{{ title }}</div>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+      {% for field in form %}
+      <div class="form-group" {% if field.name == 'instructions' %}style="grid-column:1/-1"{% endif %}>
+        <label class="form-label">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}<div class="alert-x alert-error mt-2"><span data-icon="alert"></span><span>{{ field.errors|join:', ' }}</span></div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    <div class="d-flex gap-2 mt-4"><button class="btn-x btn-primary-x"><span data-icon="save"></span><span>Save assignment</span></button><a class="btn-x btn-ghost-x" href="{% url 'assignment-list' %}">Cancel</a></div>
+  </form>
+</div>
+{% endblock %}

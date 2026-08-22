@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Profile · Aevum{% endblock %}
+{% block eyebrow %}SETTINGS{% endblock %}
+{% block topbar_title %}Profile &amp; <em>GitHub</em>{% endblock %}
+{% block content %}
+<div class="grid" style="grid-template-columns:1fr 2fr">
+  <div class="x-panel">
+    <div class="d-flex items-center gap-3 mb-3">
+      <div class="av-x" style="width:64px;height:64px;font-family:var(--font-serif);font-style:italic;font-weight:700;font-size:1.6rem;color:#fff;background:linear-gradient(135deg,#1d9bf0,#a78bfa);border:0">{{ user.username|first|upper }}</div>
+      <div style="min-width:0">
+        <div class="text-hi" style="font-weight:700;font-size:1.15rem;letter-spacing:-.02em">{{ profile.full_name|default:user.username }}</div>
+        <div class="text-mid mono small">@{{ user.username }}</div>
+      </div>
+    </div>
+    <hr class="gradient-line">
+    <div class="eyebrow mb-1">Email</div>
+    <div class="mb-3 text-hi" style="word-break:break-all">{{ user.email|default:'—' }}</div>
+    <div class="eyebrow mb-1">Course · Year</div>
+    <div class="mb-3 text-hi">{{ profile.course|default:'—' }} · {{ profile.year_level|default:'—' }}</div>
+    <hr class="gradient-line">
+    <div class="eyebrow mb-1"><span data-icon="github"></span> GitHub</div>
+    <div class="text-hi mono">{{ profile.github_username|default:'not-set' }}/{{ profile.github_repo|default:'not-set' }}</div>
+    <div class="text-mid small mt-1">Branch: <code style="background:var(--bg-elev-2);padding:2px 8px;border-radius:6px">{{ profile.github_branch|default:'main' }}</code></div>
+    <div class="text-mut small mt-2">Fill your GitHub username, repository, branch, and Personal Access Token to enable one-tap upload from Code Vault.</div>
+  </div>
+
+  <div class="x-form-card">
+    <div class="section-title">Edit profile, <em>branding</em> &amp; GitHub</div>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="grid" style="grid-template-columns:repeat(2,1fr)">
+        {% for field in form %}
+        <div class="form-group" {% if field.name == 'bio' or field.name == 'portfolio_headline' %}style="grid-column:1/-1"{% endif %}>
+          <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<div class="alert-x alert-error mt-2"><span data-icon="alert"></span><span>{{ field.errors|join:', ' }}</span></div>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <div class="d-flex gap-2 mt-4 flex-wrap">
+        <button class="btn-x btn-primary-x"><span data-icon="save"></span><span>Save profile</span></button>
+        <a class="btn-x btn-outline-x" href="{% url 'share-profile' %}"><span data-icon="share"></span><span>Preview portfolio</span></a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

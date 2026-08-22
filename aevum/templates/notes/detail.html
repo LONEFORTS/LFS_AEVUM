@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}{{ note.title }} · Aevum{% endblock %}
+{% block eyebrow %}NOTE{% endblock %}
+{% block topbar_title %}{{ note.title }}{% endblock %}
+{% block content %}
+<div class="x-panel mb-4">
+  <div class="d-flex justify-between items-start gap-3 flex-wrap">
+    <div>
+      <div class="d-flex gap-2 flex-wrap mb-3">
+        {% for tag in note.tags.all %}<span class="chip" style="background:{{ tag.color }}22;border-color:{{ tag.color }}55;color:{{ tag.color }}">{{ tag.name }}</span>{% endfor %}
+        {% if note.is_pinned %}<span class="chip warn"><span data-icon="pin"></span> Pinned</span>{% endif %}
+        {% if note.is_public %}<span class="chip accent">Public</span>{% endif %}
+      </div>
+      <h1 class="display-title" style="font-size:clamp(1.6rem,3vw,2.2rem)">{{ note.title }}</h1>
+      <div class="text-mid mono small mt-2">Updated {{ note.updated_at|date:'M d, Y H:i' }}</div>
+    </div>
+    <div class="d-flex gap-2 flex-wrap">
+      <a class="btn-x btn-outline-x" href="{% url 'note-update' note.pk %}"><span data-icon="edit"></span><span>Edit</span></a>
+      <a class="btn-x btn-outline-x" href="{% url 'share-note' note.pk %}"><span data-icon="share"></span><span>Share</span></a>
+      <a class="btn-x btn-danger-x" href="{% url 'note-delete' note.pk %}"><span data-icon="trash"></span></a>
+    </div>
+  </div>
+</div>
+<div class="x-panel">
+  <div class="markdown-body">{{ note.rendered_content }}</div>
+  {% if note.attachment %}<hr class="gradient-line"><div><span data-icon="download"></span> <a href="{{ note.attachment.url }}">Download attached file</a></div>{% endif %}
+</div>
+{% endblock %}

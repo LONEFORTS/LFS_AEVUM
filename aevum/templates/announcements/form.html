@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }} · Aevum{% endblock %}
+{% block eyebrow %}ANNOUNCEMENTS{% endblock %}
+{% block topbar_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="x-form-card" style="max-width:720px;margin:0 auto">
+  <div class="section-title">{{ title }}</div>
+  <form method="post">{% csrf_token %}
+    {% for field in form %}<div class="form-group"><label class="form-label">{{ field.label }}</label>{{ field }}{% if field.errors %}<div class="alert-x alert-error mt-2"><span data-icon="alert"></span><span>{{ field.errors|join:', ' }}</span></div>{% endif %}</div>{% endfor %}
+    <div class="d-flex gap-2"><button class="btn-x btn-primary-x"><span data-icon="save"></span><span>Save announcement</span></button><a class="btn-x btn-ghost-x" href="{% url 'announcement-list' %}">Cancel</a></div>
+  </form>
+</div>
+{% endblock %}
